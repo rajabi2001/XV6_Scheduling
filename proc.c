@@ -89,7 +89,7 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
   p->clockTickNo = 0; // set clock ticks to 0 when creating a process
-
+  p->priority = 3;     // default priority
   release(&ptable.lock);
 
   // Allocate kernel stack.
@@ -546,3 +546,26 @@ int increase_clockTickNo() {
 
   return curTickNo;
 }
+
+
+//change priority
+// setpri( int pid, int priority)
+// {
+
+//   struct proc *p;
+
+//   acquire(&ptable.lock);
+//   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+//   {
+//     if (p->pid == pid)
+//     {
+//       p->priority = priority;
+//       break;
+//     }
+    
+//   }
+  
+//   release(&ptable.lock);
+
+//   return pid;
+// }
