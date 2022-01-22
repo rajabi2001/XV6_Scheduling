@@ -548,24 +548,24 @@ int increase_clockTickNo() {
 }
 
 
-//change priority
-// setpri( int pid, int priority)
-// {
+// change priority
+int setpri( int pid, int priority)
+{
 
-//   struct proc *p;
+  struct proc *p;
 
-//   acquire(&ptable.lock);
-//   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
-//   {
-//     if (p->pid == pid)
-//     {
-//       p->priority = priority;
-//       break;
-//     }
+  acquire(&ptable.lock);
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p->pid == pid)
+    {
+      p->priority = priority;
+      break;
+    }
     
-//   }
+  }
   
-//   release(&ptable.lock);
+  release(&ptable.lock);
 
-//   return pid;
-// }
+  return pid;
+}
