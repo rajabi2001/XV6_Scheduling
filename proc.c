@@ -88,7 +88,6 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
-  p->clockTickNo = 0; // set clock ticks to 0 when creating a process
   p->priority = 3;     // default priority
   release(&ptable.lock);
 
@@ -534,17 +533,13 @@ procdump(void)
   }
 }
 
-// insert number of clock tick for current process
-int increase_clockTickNo() {
+
+int inctickcounter() {
+  int res;
   acquire(&ptable.lock);
-
-  int curTickNo = 0;
-  myproc()->clockTickNo += 1;
-  curTickNo = myproc()->clockTickNo;
-
+  res = ++myproc()->tickcounter;
   release(&ptable.lock);
-
-  return curTickNo;
+  return res;
 }
 
 

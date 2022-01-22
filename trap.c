@@ -13,7 +13,7 @@ struct gatedesc idt[256];
 extern uint vectors[];  // in vectors.S: array of 256 entry pointers
 struct spinlock tickslock;
 uint ticks;
-extern int increase_clockTickNo(void);
+extern int inctickcounter(void);
 
 void
 tvinit(void)
@@ -106,7 +106,7 @@ trap(struct trapframe *tf)
   
   // int curTickNo = increase_clockTickNo();
   if(myproc() && myproc()->state == RUNNING &&
-     tf->trapno == T_IRQ0+IRQ_TIMER)
+     tf->trapno == T_IRQ0+IRQ_TIMER && inctickcounter() == QUANTUM)
     //  tf->trapno == T_IRQ0+IRQ_TIMER && curTickNo == QUANTUM)
     yield();
 
