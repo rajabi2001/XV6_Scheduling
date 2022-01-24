@@ -123,6 +123,7 @@ void            yield(void);
 int             setpri(int pid, int priority);
 int             checkP(void);
 int             setP(int policy);
+int             getP(void);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
