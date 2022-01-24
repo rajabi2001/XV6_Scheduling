@@ -105,3 +105,18 @@ sys_setPriority(void)
   
   return setpri(pid , priority);
 }
+
+int
+sys_checkPolicy(void)
+{
+  
+  return checkP();
+}
+
+int
+sys_setPolicy(void)
+{
+  int policy;
+  argint(0, &policy);
+  return setP(policy);
+}

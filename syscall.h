@@ -22,3 +22,5 @@
 #define SYS_close  21
 #define SYS_close  21
 #define SYS_setPriority  22 
+#define SYS_checkPolicy  23
+#define SYS_setPolicy  24

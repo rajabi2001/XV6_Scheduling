@@ -14,6 +14,8 @@ struct {
 
 static struct proc *initproc;
 
+int policyy = 0;
+
 int nextpid = 1;
 extern void forkret(void);
 extern void trapret(void);
@@ -563,4 +565,33 @@ int setpri( int pid, int priority)
   release(&ptable.lock);
 
   return pid;
+}
+
+
+int checkP(void){
+
+  cprintf("selected policy is : ");
+  if (policyy == 0)
+  {
+    cprintf("defualt\n");
+  }else if (policyy == 1)
+  {
+    cprintf("Priority\n");
+  }
+  else if (policyy == 2)
+  {
+    cprintf("SML\n");
+  }else if (policyy == 3)
+  {
+    cprintf("DML\n");
+  }
+
+  return 0;
+}
+
+int setP(int policy){
+
+  policyy = policy;
+
+  return 0;
 }
