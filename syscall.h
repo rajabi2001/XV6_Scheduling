@@ -26,3 +26,4 @@
 #define SYS_setPolicy  24
 #define SYS_newwait  25
 #define SYS_getPerformance 26
+#define SYS_iszombie 27

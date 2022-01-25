@@ -108,6 +108,7 @@ extern int sys_checkPolicy(void);
 extern int sys_setPolicy(void);
 extern int sys_newwait(void);
 extern int sys_getPerformance(void);
+extern int sys_iszombie(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -136,6 +137,7 @@ static int (*syscalls[])(void) = {
 [SYS_setPolicy]   sys_setPolicy,
 [SYS_newwait]    sys_newwait,
 [SYS_getPerformance]    sys_getPerformance,
+[SYS_iszombie]    sys_iszombie,
 };
 
 void

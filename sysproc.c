@@ -146,3 +146,12 @@ int sys_getPerformance(void){
     return -1;
   return getPerformance(pid, Btime, Wtime, TAtime);
 }
+
+int
+sys_iszombie(void)
+{
+  int pid ;
+  argint(0, &pid);
+  
+  return isZombie(pid);
+}

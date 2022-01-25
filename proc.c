@@ -868,3 +868,35 @@ int getPerformance(int pid, int *Btime, int *Wtime, int *TAtime){
 
   return 0;
 }
+
+// check is it in Zombie state or not 
+int isZombie(int pid)
+{
+
+  struct proc *p;
+
+  acquire(&ptable.lock);
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p->pid == pid)
+    {
+      if (p->state == UNUSED || p->state == ZOMBIE)
+      {
+        release(&ptable.lock);
+        return 1;
+      }else
+      {
+        release(&ptable.lock);
+        return 0;
+      }
+      
+      
+      break;
+    }
+    
+  }
+  
+  release(&ptable.lock);
+
+  return 0;
+}

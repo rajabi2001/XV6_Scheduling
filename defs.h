@@ -127,6 +127,7 @@ int             getP(void);
 int             getPri(void);
 int             newwait(int*, int*, int*);
 int             getPerformance(int, int*, int*, int*);
+int             isZombie(int pid);
 
 
 // swtch.S
