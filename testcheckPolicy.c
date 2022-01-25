@@ -8,7 +8,7 @@
 int main(int argc, char const *argv[])
 {
 
-    setPolicy(1);
+    setPolicy(2);
     checkPolicy();
 
     return 0;
