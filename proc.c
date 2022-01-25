@@ -412,8 +412,10 @@ scheduler(void)
       if (foundP != 0)
         p = foundP;
       else{
-        if(p->state != RUNNABLE)
+        if(p->state != RUNNABLE){
+          release(&ptable.lock);
           continue;
+        }
       }
 
       c->proc = p;
