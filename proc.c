@@ -844,3 +844,27 @@ void updatetimes() {
   }
   release(&ptable.lock);
 }
+
+int getPerformance(int pid, int *Btime, int *Wtime, int *TAtime){
+  *Btime = 0; // cpu burst time
+  *Wtime = 0; // waiting time
+  *TAtime = 0; // turnaround time
+  
+  struct proc *p;
+  
+  acquire(&ptable.lock);
+  
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if (p->pid == pid){
+      *TAtime = p->stime + p->retime + p->rutime;
+      *Wtime = p->stime + p->retime;
+      *Btime = p->rutime;
+      break;
+    }
+    
+  }
+
+  release(&ptable.lock);
+
+  return 0;
+}

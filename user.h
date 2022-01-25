@@ -27,6 +27,7 @@ int setPriority(int pid, int priority);
 int checkPolicy(void);
 int setPolicy(int policy);
 int newwait(int*, int*, int*);
+int getPerformance(int, int*, int*, int*);
 
 // ulib.c
 int stat(const char*, struct stat*);

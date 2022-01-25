@@ -107,6 +107,7 @@ extern int sys_setPriority(void);
 extern int sys_checkPolicy(void);
 extern int sys_setPolicy(void);
 extern int sys_newwait(void);
+extern int sys_getPerformance(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -134,6 +135,7 @@ static int (*syscalls[])(void) = {
 [SYS_checkPolicy]   sys_checkPolicy,
 [SYS_setPolicy]   sys_setPolicy,
 [SYS_newwait]    sys_newwait,
+[SYS_getPerformance]    sys_getPerformance,
 };
 
 void

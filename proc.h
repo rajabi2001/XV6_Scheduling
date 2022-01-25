@@ -64,7 +64,7 @@ struct proc {
 //   fixed-size stack
 //   expandable heap
 
-static void wakeup1(void *chan);
+// static void wakeup1(void *chan);
 
 void updatetimes();
 

@@ -132,3 +132,17 @@ int sys_newwait(void) {
     return -1;
   return newwait(retime, rutime, stime);
 }
+
+int sys_getPerformance(void){
+  int pid; 
+  int *Btime, *Wtime, *TAtime;
+
+  argint(0, &pid);
+  if (argptr(0, (void*)&Btime, sizeof(Btime)) < 0)
+    return -1;
+  if (argptr(1, (void*)&Wtime, sizeof(Wtime)) < 0)
+    return -1;
+  if (argptr(2, (void*)&TAtime, sizeof(TAtime)) < 0)
+    return -1;
+  return getPerformance(pid, Btime, Wtime, TAtime);
+}
