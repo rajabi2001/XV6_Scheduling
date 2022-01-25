@@ -51,6 +51,11 @@ struct proc {
   char name[16];               // Process name (debugging)
   int tickcounter;
   int priority;                 // process priority (1-6)
+  uint ctime;                  // Process creation time
+  uint ttime;                  // Process termination time
+  int stime;                   //process SLEEPING time
+  int retime;                  //process READY(RUNNABLE) time
+  int rutime;                  //process RUNNING time
 };
 
 // Process memory is laid out contiguously, low addresses first:
@@ -58,3 +63,10 @@ struct proc {
 //   original data and bss
 //   fixed-size stack
 //   expandable heap
+
+static void wakeup1(void *chan);
+
+void updatetimes();
+
+struct proc* findReadyProcess(int *index1, int *index2, int *index3,
+      int *index4, int *index5, int *index6, uint *priority);

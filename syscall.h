@@ -24,3 +24,4 @@
 #define SYS_setPriority  22 
 #define SYS_checkPolicy  23
 #define SYS_setPolicy  24
+#define SYS_newwait  25

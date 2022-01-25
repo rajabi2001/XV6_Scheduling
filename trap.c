@@ -12,7 +12,9 @@
 struct gatedesc idt[256];
 extern uint vectors[]; // in vectors.S: array of 256 entry pointers
 struct spinlock tickslock;
+
 uint ticks;
+
 extern int inctickcounter(void);
 extern int getp(void);
 extern int getPri(void);
@@ -54,6 +56,7 @@ void trap(struct trapframe *tf)
     {
       acquire(&tickslock);
       ticks++;
+      updatetimes();
       wakeup(&ticks);
       release(&tickslock);
     }
@@ -121,7 +124,7 @@ void trap(struct trapframe *tf)
       yield();
   }
   else if (policy == 2) // SML
-  {
+  {    
     if (myproc() && myproc()->state == RUNNING &&
         tf->trapno == T_IRQ0 + IRQ_TIMER && inctickcounter() == (7 - getPri()) * QUANTUM)
       yield();

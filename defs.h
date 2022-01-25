@@ -125,6 +125,7 @@ int             checkP(void);
 int             setP(int policy);
 int             getP(void);
 int             getPri(void);
+int             newwait(int*, int*, int*);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

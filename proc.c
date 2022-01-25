@@ -21,7 +21,7 @@ extern void forkret(void);
 extern void trapret(void);
 
 struct proc* findReadyProcess(int *index1, int *index2, int *index3,
-      int *index4, int *index5, int *index6, int *priority);
+      int *index4, int *index5, int *index6, uint *priority);
 
 static void wakeup1(void *chan);
 
@@ -93,7 +93,15 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+
   p->priority = 3;     // default priority
+
+  p->ctime = ticks;
+  p->ttime = 0;
+  p->retime = 0;
+  p->rutime = 0;
+  p->stime = 0;
+
   release(&ptable.lock);
 
   // Allocate kernel stack.
@@ -135,6 +143,7 @@ userinit(void)
     panic("userinit: out of memory?");
   inituvm(p->pgdir, _binary_initcode_start, (int)_binary_initcode_size);
   p->sz = PGSIZE;
+  p->ctime = ticks;
   memset(p->tf, 0, sizeof(*p->tf));
   p->tf->cs = (SEG_UCODE << 3) | DPL_USER;
   p->tf->ds = (SEG_UDATA << 3) | DPL_USER;
@@ -299,6 +308,7 @@ wait(void)
         p->parent = 0;
         p->name[0] = 0;
         p->killed = 0;
+        p->ctime = 0;
         p->state = UNUSED;
         release(&ptable.lock);
         return pid;
@@ -313,6 +323,52 @@ wait(void)
 
     // Wait for children to exit.  (See wakeup1 call in proc_exit.)
     sleep(curproc, &ptable.lock);  //DOC: wait-sleep
+  }
+}
+
+int newwait(int *retime, int *rutime, int *stime) {
+  struct proc *p;
+  int havekids, pid;
+  acquire(&ptable.lock);
+  for(;;){
+    // Scan through table looking for zombie children.
+    havekids = 0;
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->parent != myproc())
+        continue;
+      havekids = 1;
+      if(p->state == ZOMBIE){
+        // Found one.
+        *retime = p->retime;
+        *rutime = p->rutime;
+        *stime = p->stime;
+        pid = p->pid;
+        kfree(p->kstack);
+        p->kstack = 0;
+        freevm(p->pgdir);
+        p->state = UNUSED;
+        p->pid = 0;
+        p->parent = 0;
+        p->name[0] = 0;
+        p->killed = 0;
+        p->ctime = 0;
+        p->retime = 0;
+        p->rutime = 0;
+        p->stime = 0;
+        p->priority = 0;
+        release(&ptable.lock);
+        return pid;
+      }
+    }
+
+    // No point waiting if we don't have any children.
+    if(!havekids || myproc()->killed){
+      release(&ptable.lock);
+      return -1;
+    }
+
+    // Wait for children to exit.  (See wakeup1 call in proc_exit.)
+    sleep(myproc(), &ptable.lock);  //DOC: wait-sleep
   }
 }
 
@@ -399,7 +455,7 @@ scheduler(void)
     {
       struct proc *foundP = 0;
 
-      int priority = 1;
+      uint priority = 1;
 
       int index1 = 0;
       int index2 = 0;
@@ -705,7 +761,7 @@ int getPri(void){
 }
 
 struct proc* findReadyProcess(int *index1, int *index2, int *index3,
-      int *index4, int *index5, int *index6, int *priority) {
+      int *index4, int *index5, int *index6, uint *priority) {
 
   int i;
   struct proc* proc2;
@@ -760,4 +816,28 @@ notfound:
     goto notfound;
   }
   return 0;
+}
+
+
+
+//This method will run every clock tick and update the statistic fields for each proc
+void updatetimes() {
+  struct proc *p;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    switch(p->state) {
+      case SLEEPING:
+        p->stime++;
+        break;
+      case RUNNABLE:
+        p->retime++;
+        break;
+      case RUNNING:
+        p->rutime++;
+        break;
+      default:
+        ;
+    }
+  }
+  release(&ptable.lock);
 }
