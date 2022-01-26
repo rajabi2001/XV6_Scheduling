@@ -129,6 +129,15 @@ void trap(struct trapframe *tf)
         tf->trapno == T_IRQ0 + IRQ_TIMER && inctickcounter() == (7 - getPri()) * QUANTUM)
       yield();
   }
+  else if (policy == 3) // DML
+  {    
+    if (myproc() && myproc()->state == RUNNING &&
+        tf->trapno == T_IRQ0 + IRQ_TIMER && inctickcounter() == (7 - getPri()) * QUANTUM){
+
+          decpriority();
+          yield();
+    }
+  }
 
   // if(myproc() && myproc()->state == RUNNING &&
   //    tf->trapno == T_IRQ0+IRQ_TIMER && inctickcounter() == QUANTUM)
