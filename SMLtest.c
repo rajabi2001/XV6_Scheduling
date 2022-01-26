@@ -5,12 +5,13 @@
 
 int main(int argc, char const *argv[])
 {
-    int n = 30,y;
+    int n = 60,y;
     int pidlist[n];
     int Bavg = 0,Wavg = 0,TAavg = 0;
     int ppid = getpid();
-    setPolicy(1);
+    setPolicy(2);
     checkPolicy();
+
 
     for(int i=0;i<n;i++) 
     {
@@ -18,19 +19,19 @@ int main(int argc, char const *argv[])
         {   int x = getpid();
             // printf(1,"[son] pid %d \n",x);
             
-            if (i <= 4)
+            if (i <= 9)
             {
                 setPriority(x,6);
-            }else if (i <= 9)
-            {
-                setPriority(x,5);
-            }else if (i <= 14)
-            {
-                setPriority(x,4);
             }else if (i <= 19)
             {
+                setPriority(x,5);
+            }else if (i <= 29)
+            {
+                setPriority(x,4);
+            }else if (i <= 39)
+            {
                 setPriority(x,3);
-            }else if (i <= 24)
+            }else if (i <= 49)
             {
                 setPriority(x,2);
             }else 
@@ -39,7 +40,7 @@ int main(int argc, char const *argv[])
             }
             
             
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 20; j++)
             {
                 printf(1,"/%d/ : /%d/\n",x,j);
             }
@@ -73,6 +74,8 @@ int main(int argc, char const *argv[])
         printf(1,"Bavg = %d\n",Bavg);
         printf(1,"TAavg = %d\n",TAavg);
     }
+    
+    
 
     return 0;
 }
