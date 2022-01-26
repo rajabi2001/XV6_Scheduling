@@ -22,7 +22,7 @@ int main(int argc, char const *argv[])
             int x = getpid();
             
             
-            for (int j = 0; j < 1000; j++)
+            for (int j = 0; j < 100; j++)
             {
                 printf(1,"/%d/ : /%d/\n",x,j);
             }
