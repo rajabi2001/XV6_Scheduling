@@ -15,7 +15,9 @@ int main(int argc, char const *argv[])
 
     for(int i=0;i<n;i++) 
     {
-        if(fork() == 0)
+        int p = fork();
+        pidlist[i] = p;
+        if(p == 0)
         {   int x = getpid();
             // printf(1,"[son] pid %d \n",x);
             
@@ -45,7 +47,7 @@ int main(int argc, char const *argv[])
                 printf(1,"/%d/ : /%d/\n",x,j);
             }
             
-            pidlist[i] = x;
+            // pidlist[i] = x;
             break;
         }
     }
