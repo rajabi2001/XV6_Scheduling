@@ -857,13 +857,13 @@ int getPerformance(int pid, int *Btime, int *Wtime, int *TAtime){
   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if (p->pid == pid){
       *TAtime = p->stime + p->retime + p->rutime;
-      *Wtime = p->stime + p->retime;
       *Btime = p->rutime;
+      *Wtime = p->stime + p->retime  ;
       break;
     }
     
   }
-
+  // cprintf("in proc.c  : tatime = %d , btime = %d , wtime = %d \n",*TAtime , *Btime ,*Wtime );
   release(&ptable.lock);
 
   return 0;
@@ -880,7 +880,7 @@ int isZombie(int pid)
   {
     if (p->pid == pid)
     {
-      if (p->state == UNUSED || p->state == ZOMBIE)
+      if (p->state == ZOMBIE)
       {
         release(&ptable.lock);
         return 1;
@@ -896,7 +896,7 @@ int isZombie(int pid)
     
   }
   
+  
   release(&ptable.lock);
-
   return 0;
 }

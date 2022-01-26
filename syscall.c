@@ -110,6 +110,7 @@ extern int sys_newwait(void);
 extern int sys_getPerformance(void);
 extern int sys_iszombie(void);
 
+
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
 [SYS_exit]    sys_exit,

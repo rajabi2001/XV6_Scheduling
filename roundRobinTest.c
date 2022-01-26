@@ -10,83 +10,12 @@ int main(int argc, char const *argv[])
 
     printf(1,"This is roundRobinTest\n");
 
-    // if (fork()){ //child1
-    //     printf(1,"i'm a child");
-       
-     
-    // }else{ //parent
-
-    //     if (fork()){    //child2
-    //         printf(1,"i'm a child");
-        
-        
-    //     }else{ //parent
-
-    //         if (fork()){ //child3
-    //             printf(1,"i'm a child");
-
-
-    //         }else{ //parent
-    
-    //             if (fork()){    //child4
-    //                 printf(1,"i'm a child");
-        
-        
-    //             }else{ //parent
-
-    //                 if (fork()){    //child5
-    //                     printf(1,"i'm a child");
-        
-        
-    //                 }else{ //parent
-
-    //                     if (fork()){    //child6
-    //                         printf(1,"i'm a child");
-        
-        
-    //                     }else{ //parent
-        
-    //                         if (fork()){    //child7
-    //                             printf(1,"i'm a child");
-        
-        
-    //                         }else{ //parent
-        
-    //                             if (fork()){    //child8
-    //                                 printf(1,"i'm a child");
-        
-        
-    //                             }else{ //parent
-        
-    //                                 if (fork()){    //child9
-    //                                     printf(1,"i'm a child");
-        
-        
-    //                                 }else{ //parent
-        
-    //                                     wait();
-    //                                 }
-    //                             }
-    //                         }
-
-    //                     }
-        
-    //                 }
-        
-    //             }
-    //         }
-    //     }
-    // }
-
-    int x =1 ;
     for (int i = 0; i < 3; i++)
     {
         int pid = fork();
         if (pid == 0 ) //child
         {
-            
-            x +=1;
-
+            int x = getpid();
             for (int j = 0; j < 10; j++)
             {
                 printf(1,"/%d/ : /%d/\n",x,j);
@@ -95,21 +24,25 @@ int main(int argc, char const *argv[])
 
         }else //parent
         {
+            // x *=i;
+
+            while (iszombie(pid) != 1) 
+                sleep(1);
             
-            // while (iszombie(pid) != 1);
-            wait();
-            
+
             int Btime,TAtime,Wtime;
             
-            getPerformance(pid,&Btime,&TAtime,&Wtime);
+            getPerformance(pid,&Btime,&Wtime,&TAtime);
 
-            printf(1,"%d , Wtime = %d ? Btime = %d ?  TAtime = %d\n",pid ,Wtime ,Btime ,TAtime);
+            printf(1,"pid = %d , TAtime = %d ",pid,TAtime );
+            printf(1,"Btime = %d ",Btime);
+            printf(1,"Wtime = %d \n",Wtime);
 
             Wavg += Wtime;
             Bavg += Btime;
             TAavg += TAtime;
 
-            
+            wait();
 
             
         }

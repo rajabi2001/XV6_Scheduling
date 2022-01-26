@@ -138,12 +138,13 @@ int sys_getPerformance(void){
   int *Btime, *Wtime, *TAtime;
 
   argint(0, &pid);
-  if (argptr(0, (void*)&Btime, sizeof(Btime)) < 0)
+  if (argptr(1, (void*)&Btime, sizeof(Btime)) < 0)
     return -1;
-  if (argptr(1, (void*)&Wtime, sizeof(Wtime)) < 0)
+  if (argptr(2, (void*)&Wtime, sizeof(Wtime)) < 0)
     return -1;
-  if (argptr(2, (void*)&TAtime, sizeof(TAtime)) < 0)
+  if (argptr(3, (void*)&TAtime, sizeof(TAtime)) < 0)
     return -1;
+  
   return getPerformance(pid, Btime, Wtime, TAtime);
 }
 
@@ -155,3 +156,4 @@ sys_iszombie(void)
   
   return isZombie(pid);
 }
+
